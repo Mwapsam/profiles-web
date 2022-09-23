@@ -7,7 +7,8 @@ import New from './auth/New';
 import Verification from './auth/Verification';
 import User from './auth/User';
 import Edit from './profiles/Edit';
+import ProfileRoute from './home/ProfileRoute';
 
 export {
-  Register, Login, Profile, Home, Private, New, Verification, User, Edit,
+  Register, Login, Profile, Home, Private, New, Verification, User, Edit, ProfileRoute,
 };

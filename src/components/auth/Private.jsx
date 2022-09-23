@@ -7,17 +7,16 @@ const Private = ({ children }) => {
   const {
     data: user, isLoading, isSuccess, isError, error,
   } = useGetUserQuery();
+  const id = Cookies.get('user');
 
-  let content;
-  if (isLoading) {
-    content = <p>Loading...</p>;
-  } else if (isSuccess) {
-    content = user;
-  } else if (isError) {
-    content = <p>{error}</p>;
-  }
-  Cookies.set('user', content, { expires: 0.5 });
-  return content ? children : <Navigate to="/new" />;
+  return (
+    <>
+      {isLoading && <p>Loading...</p>}
+      {isError && <p>{error}</p>}
+      {isSuccess && id ? children : <Navigate to="/login" />}
+      {isSuccess && Cookies.set('user', user, { expires: 0.5 })}
+    </>
+  );
 };
 
 export default Private;

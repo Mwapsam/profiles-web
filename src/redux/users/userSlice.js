@@ -33,10 +33,9 @@ export const userSlice = createApi({
       invalidatesTags: ['User'],
     }),
     logoutUser: builder.mutation({
-      query: (user) => ({
+      query: () => ({
         url: '/api/logout',
         method: 'POST',
-        body: user,
       }),
       invalidatesTags: ['User'],
     }),
