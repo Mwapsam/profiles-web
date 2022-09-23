@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLoginUserMutation } from '../../redux/users/userSlice';
 
 const initialState = { email: '', password: '' };
@@ -7,12 +8,15 @@ const Login = () => {
   const [loginUser] = useLoginUserMutation();
   const [user, setUser] = useState(initialState);
 
+  const navigate = useNavigate();
+
   const signinUser = (e) => {
     e.preventDefault();
     loginUser({
       email: user.email,
       password: user.password,
     });
+    navigate('/new');
     setUser('');
   };
 
