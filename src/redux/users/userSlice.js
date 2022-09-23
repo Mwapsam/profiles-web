@@ -2,12 +2,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
 
-const user = Cookies.get('users');
+const user = Cookies.get('user');
+const token = Cookies.get('jwt');
 
 export const userSlice = createApi({
   reducerPath: 'user',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_SERVER,
+    prepareHeaders: (headers) => {
+      headers.set('Authorization', token);
+      return headers;
+    },
     credentials: 'include',
   }),
   tagTypes: ['User'],
@@ -33,10 +38,9 @@ export const userSlice = createApi({
       invalidatesTags: ['User'],
     }),
     logoutUser: builder.mutation({
-      query: (user) => ({
+      query: () => ({
         url: '/api/logout',
         method: 'POST',
-        body: user,
       }),
       invalidatesTags: ['User'],
     }),

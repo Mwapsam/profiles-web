@@ -13,7 +13,7 @@ const User = () => {
     content = <p>Loading...</p>;
   } else if (isSuccess) {
     content = user;
-    Cookies.set('users', content.id, { expires: 0.5 });
+    Cookies.set('user', content.id, { expires: 0.5 });
   } else if (isError) {
     content = <p>{error}</p>;
   }
