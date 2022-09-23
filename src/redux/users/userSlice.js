@@ -1,12 +1,13 @@
+/* eslint-disable no-unused-vars */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import Cookies from 'js-cookie';
+
+const user = Cookies.get('users');
 
 export const userSlice = createApi({
   reducerPath: 'user',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_SERVER,
-    prepareHeaders(headers) {
-      return headers;
-    },
     credentials: 'include',
   }),
   tagTypes: ['User'],
@@ -39,9 +40,50 @@ export const userSlice = createApi({
       }),
       invalidatesTags: ['User'],
     }),
+    getProfiles: builder.query({
+      query: () => '/people/',
+      transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+      providesTags: ['Profile'],
+    }),
+    getProfileDetail: builder.query({
+      query: () => `/people/detail/${user}/`,
+      providesTags: ['Profile'],
+    }),
+    createProfile: builder.mutation({
+      query: (profile) => ({
+        url: '/people/create',
+        method: 'POST',
+        body: profile,
+      }),
+      invalidatesTags: ['Profile'],
+    }),
+    updateProfile: builder.mutation({
+      query: ({ user, formData }) => ({
+        url: `/people/update/${user}/`,
+        method: 'PATCH',
+        body: formData,
+      }),
+      invalidatesTags: ['Profile'],
+    }),
+    deleteProfile: builder.mutation({
+      query: ({ id, patch }) => ({
+        url: `/people/delete/${id}/`,
+        method: 'DELETE',
+        body: patch,
+      }),
+      invalidatesTags: ['Profile'],
+    }),
   }),
 });
 
 export const {
-  useGetUserQuery, useCreateUserMutation, useLoginUserMutation, useLogoutUserMutation,
+  useGetUserQuery,
+  useCreateUserMutation,
+  useLoginUserMutation,
+  useLogoutUserMutation,
+  useGetProfilesQuery,
+  useGetProfileDetailQuery,
+  useCreateProfileMutation,
+  useUpdateProfileMutation,
+  useDeleteProfileMutation,
 } = userSlice;
