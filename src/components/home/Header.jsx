@@ -1,10 +1,15 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import { useLogoutUserMutation } from '../../redux/users/userSlice';
 
 const Header = ({ profileFilter, search }) => {
   const [logout] = useLogoutUserMutation();
+  const handleLogout = () => {
+    Cookies.remove('user', { path: '' });
+    logout();
+  };
   return (
     <>
       <header className="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
@@ -54,7 +59,7 @@ const Header = ({ profileFilter, search }) => {
               <button
                 type="button"
                 className="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
-                onClick={() => logout()}
+                onClick={handleLogout}
               >
                 <Link to="/login">Logout</Link>
               </button>

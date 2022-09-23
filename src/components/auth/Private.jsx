@@ -1,22 +1,11 @@
 /* eslint-disable react/prop-types */
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { useGetUserQuery } from '../../redux/users/userSlice';
 
 const Private = ({ children }) => {
-  const {
-    data: user, isLoading, isSuccess, isError, error,
-  } = useGetUserQuery();
-  const id = Cookies.get('user');
+  const token = Cookies.get('jwt');
 
-  return (
-    <>
-      {isLoading && <p>Loading...</p>}
-      {isError && <p>{error}</p>}
-      {isSuccess && id ? children : <Navigate to="/login" />}
-      {isSuccess && Cookies.set('user', user, { expires: 0.5 })}
-    </>
-  );
+  return token ? children : <Navigate to="/login" />;
 };
 
 export default Private;
